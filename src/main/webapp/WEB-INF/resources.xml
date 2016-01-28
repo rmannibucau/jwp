@@ -1,0 +1,8 @@
+<resources>
+  <Service id="swagger2" class-name="com.github.rmannibucau.jwp.swagger2.Swagger2ContainerRequestFilter">
+    title = Java Wordpress
+    description = A simple read-only API using JAX-RS and a Wordpress database.
+    version = ${project.version}
+    basePath = /jwp/api
+  </Service>
+</resources>

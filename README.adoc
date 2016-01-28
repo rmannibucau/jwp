@@ -1,0 +1,39 @@
+= JWP
+
+== Build
+
+JWP requires Java 8 and Maven 3.
+
+== Try it out
+
+Replace database connection of the pom.xml by the actual settings to connect to your Wordpress database:
+
+[source,xml]
+----
+<jwp>new://Resource?type=DataSource</jwp>
+<jwp.JdbcUrl><![CDATA[jdbc:mysql://localhost:3306/wptest?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8]]></jwp.JdbcUrl>
+<jwp.JdbcDriver>com.mysql.jdbc.Driver</jwp.JdbcDriver>
+<jwp.UserName>root</jwp.UserName>
+<jwp.Password>pwd</jwp.Password>
+----
+
+ust run the next command and go on http://localhost:8080/jwp/ to get swagger documentation:
+
+[source]
+---
+mvn clean process-classes tomee-embedded:run
+---
+
+== MySQL connection
+
+If you read "Try it out" part you probably saw we set on the MySQL jdbc driver the property `zeroDateTimeBehavior=convertToNull`.
+It is to not get error when default date value is 0 which is generally done by Wordpress.
+
+We also set the encoding to be UTF-8 to avoid issues: `useUnicode=true&characterEncoding=UTF-8`.
+
+== Swagger and Customize deployment endpoint
+
+Swagger can be configured either directly in WEB-INF/resources.xml `swagger2` service or through system properties
+using `swagger2.{property name}=xxxx`.
+
+You can find available properties in `src/main/java/com/github/rmannibucau/jwp/swagger2/Swagger2ContainerRequestFilter.java`.

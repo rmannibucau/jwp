@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="
+              http://java.sun.com/xml/ns/persistence
+              http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+  <persistence-unit name="jwp">
+    <jta-data-source>jwp</jta-data-source>
+    <class>com.github.rmannibucau.jwp.jpa.Comment</class>
+    <class>com.github.rmannibucau.jwp.jpa.CommentMeta</class>
+    <class>com.github.rmannibucau.jwp.jpa.Link</class>
+    <class>com.github.rmannibucau.jwp.jpa.Option</class>
+    <class>com.github.rmannibucau.jwp.jpa.Post</class>
+    <class>com.github.rmannibucau.jwp.jpa.PostMeta</class>
+    <class>com.github.rmannibucau.jwp.jpa.Term</class>
+    <class>com.github.rmannibucau.jwp.jpa.TermMeta</class>
+    <class>com.github.rmannibucau.jwp.jpa.TermTaxonomy</class>
+    <class>com.github.rmannibucau.jwp.jpa.User</class>
+    <class>com.github.rmannibucau.jwp.jpa.UserMeta</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <!-- Don't create a database, most of the time we just want to just reuse an existing instance.
+      <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
+      -->
+    </properties>
+  </persistence-unit>
+</persistence>
