@@ -20,9 +20,9 @@ Replace database connection of the pom.xml by the actual settings to connect to 
 ust run the next command and go on http://localhost:8080/jwp/ to get swagger documentation:
 
 [source]
----
+----
 mvn clean process-classes tomee-embedded:run
----
+----
 
 == MySQL connection
 
