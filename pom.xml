@@ -174,7 +174,7 @@
           <context>/${project.artifactId}</context>
           <classpathAsWar>true</classpathAsWar>
           <containerProperties>
-            <!-- we don't a 100% EE server yet so switch off few things -->
+            <!-- we don't need a 100% EE server yet so switch off few things slowing down the boot or polluting logs -->
             <openejb.environment.default>false</openejb.environment.default>
             <tomee.skip-tld>false</tomee.skip-tld>
             <!-- update this config to access your database -->
