@@ -7,16 +7,9 @@ import com.github.rmannibucau.jwp.jpa.User;
 import com.github.rmannibucau.jwp.resource.domain.PostModel;
 import com.github.rmannibucau.jwp.resource.domain.PostPage;
 import com.github.rmannibucau.jwp.resource.domain.TermModel;
-import org.apache.openejb.api.configuration.PersistenceUnitDefinition;
-import org.apache.openejb.junit.ApplicationComposer;
-import org.apache.openejb.testing.Classes;
-import org.apache.openejb.testing.ContainerProperties;
-import org.apache.openejb.testing.ContainerProperties.Property;
-import org.apache.openejb.testing.Default;
-import org.apache.openejb.testing.EnableServices;
-import org.apache.openejb.testing.Jars;
+import com.github.rmannibucau.jwp.runner.SingleContainerRunner;
 import org.apache.openejb.testing.RandomPort;
-import org.apache.openejb.testing.SimpleLog;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,19 +37,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-@Default
-@SimpleLog
-@Jars("deltaspike-")
-@PersistenceUnitDefinition
-@EnableServices(jaxrs = true)
-@RunWith(ApplicationComposer.class)
-@Classes(cdi = true, context = "jwp")
-@ContainerProperties({
-    @Property(name = "jwp", value = "new://Resource?type=DataSource"),
-    @Property(name = "jwp.JdbcDriver", value = "org.h2.Driver"),
-    @Property(name = "jwp.JdbcUrl", value = "jdbc:h2:mem:jwp_post")
-    //,@Property(name = "jwp.LogSql", value = "true")
-})
+@RunWith(SingleContainerRunner.class)
 public class PostResourceTest {
     @Inject
     private UserTransaction ut;
@@ -144,6 +125,16 @@ public class PostResourceTest {
                 posts[i] = post;
             });
 
+        ut.commit();
+    }
+
+    @After
+    public void clean() throws Exception {
+        ut.begin();
+        em.createQuery("delete from TermTaxonomy").executeUpdate();
+        em.createQuery("delete from Term").executeUpdate();
+        em.createQuery("delete from Post").executeUpdate();
+        em.createQuery("delete from User").executeUpdate();
         ut.commit();
     }
 
@@ -339,10 +330,10 @@ public class PostResourceTest {
         assertEquals(reference.getPostStatus(), retrieved.getStatus());
         assertEquals(reference.getPostTitle(), retrieved.getTitle());
         assertEquals(reference.getPostAuthor().getId(), retrieved.getAuthor().getId());
-        assertEquals(reference.getPostDate().getTime(), retrieved.getDate().getTime(), TimeUnit.SECONDS.toMillis(1));
+        assertEquals(reference.getPostDate().getTime(), retrieved.getDate().getTime(), TimeUnit.SECONDS.toMillis(2));
         assertEquals(0, retrieved.getParentId());
         assertEquals(reference.getPostExcerpt(), retrieved.getExcerpt());
-        assertEquals(reference.getPostModified().getTime(), retrieved.getModified().getTime(), TimeUnit.SECONDS.toMillis(1));
+        assertEquals(reference.getPostModified().getTime(), retrieved.getModified().getTime(), TimeUnit.SECONDS.toMillis(2));
         assertEquals(
             ofNullable(reference.getTermTaxonomies()).orElse(emptyList()).stream()
                 .filter(t -> "category".equals(t.getTaxonomy()))

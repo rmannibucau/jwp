@@ -47,6 +47,6 @@ public class PostMapper {
     }
 
     private List<TermModel> mapTerms(final Collection<TermTaxonomy> terms) {
-        return terms.stream().map(TermTaxonomy::getTerm).map(termMapper::toModel).collect(toList());
+        return terms.stream().map(t -> termMapper.toModel(t, t.getTerm())).collect(toList());
     }
 }

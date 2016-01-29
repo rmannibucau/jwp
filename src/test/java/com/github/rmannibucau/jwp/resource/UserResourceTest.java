@@ -5,16 +5,9 @@ import com.github.rmannibucau.jwp.jpa.User;
 import com.github.rmannibucau.jwp.jpa.UserMeta;
 import com.github.rmannibucau.jwp.resource.domain.UserModel;
 import com.github.rmannibucau.jwp.resource.domain.UserPage;
-import org.apache.openejb.api.configuration.PersistenceUnitDefinition;
-import org.apache.openejb.junit.ApplicationComposer;
-import org.apache.openejb.testing.Classes;
-import org.apache.openejb.testing.ContainerProperties;
-import org.apache.openejb.testing.ContainerProperties.Property;
-import org.apache.openejb.testing.Default;
-import org.apache.openejb.testing.EnableServices;
-import org.apache.openejb.testing.Jars;
+import com.github.rmannibucau.jwp.runner.SingleContainerRunner;
 import org.apache.openejb.testing.RandomPort;
-import org.apache.openejb.testing.SimpleLog;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,18 +31,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-@Default
-@SimpleLog
-@Jars("deltaspike-")
-@PersistenceUnitDefinition
-@EnableServices(jaxrs = true)
-@RunWith(ApplicationComposer.class)
-@Classes(cdi = true, context = "jwp")
-@ContainerProperties({
-    @Property(name = "jwp", value = "new://Resource?type=DataSource"),
-    @Property(name = "jwp.JdbcDriver", value = "org.h2.Driver"),
-    @Property(name = "jwp.JdbcUrl", value = "jdbc:h2:mem:jwp_user")
-})
+@RunWith(SingleContainerRunner.class)
 public class UserResourceTest {
     @Inject
     private UserTransaction ut;
@@ -121,6 +103,15 @@ public class UserResourceTest {
                 }
             });
 
+        ut.commit();
+    }
+
+    @After
+    public void clean() throws Exception {
+        ut.begin();
+        em.createQuery("delete from UserMeta ").executeUpdate();
+        em.createQuery("delete from Post").executeUpdate();
+        em.createQuery("delete from User").executeUpdate();
         ut.commit();
     }
 

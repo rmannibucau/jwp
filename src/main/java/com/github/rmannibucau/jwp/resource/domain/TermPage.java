@@ -4,13 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class TermModel {
-    private long id;
-    private String name;
-    private String slug;
-    private long group;
-    private String type;
+@NoArgsConstructor
+public class TermPage {
+    private long found;
+    private List<TermModel> items;
 }
