@@ -33,7 +33,4 @@ We also set the encoding to be UTF-8 to avoid issues: `useUnicode=true&character
 
 == Swagger and Customize deployment endpoint
 
-Swagger can be configured either directly in WEB-INF/resources.xml `swagger2` service or through system properties
-using `swagger2.{property name}=xxxx`.
-
-You can find available properties in `src/main/java/com/github/rmannibucau/jwp/swagger2/Swagger2ContainerRequestFilter.java`.
+Swagger can be configured directly in WEB-INF/web.xml.

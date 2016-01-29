@@ -72,6 +72,10 @@
           <groupId>org.javassist</groupId>
           <artifactId>javassist</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.reflections</groupId>
+          <artifactId>reflections</artifactId>
+        </exclusion>
         <!-- we'll reuse the container one or add an impl as well to your app -->
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -179,8 +183,6 @@
             <jwp.JdbcDriver>com.mysql.jdbc.Driver</jwp.JdbcDriver>
             <jwp.UserName>root</jwp.UserName>
             <jwp.Password>pwd</jwp.Password>
-            <!-- swagger2 overrides (not yet filtered so we don't have the right value yet) -->
-            <swagger2.version>${project.version}</swagger2.version>
           </containerProperties>
         </configuration>
         <dependencies>
@@ -188,6 +190,11 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.35</version>
+          </dependency>
+          <dependency> <!-- M1 got released with 0.8 which has a bug with enums in list, fixed for M2 -->
+            <groupId>org.apache.johnzon</groupId>
+            <artifactId>johnzon-jaxrs</artifactId>
+            <version>0.9.2-incubating</version>
           </dependency>
         </dependencies>
       </plugin>
