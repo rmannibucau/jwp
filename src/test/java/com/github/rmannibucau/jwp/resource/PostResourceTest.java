@@ -36,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -342,10 +344,16 @@ public class PostResourceTest {
         assertEquals(reference.getPostExcerpt(), retrieved.getExcerpt());
         assertEquals(reference.getPostModified().getTime(), retrieved.getModified().getTime(), TimeUnit.SECONDS.toMillis(1));
         assertEquals(
-            reference.getCategories().stream().map(c -> c.getTerm().getName()).collect(toSet()),
+            ofNullable(reference.getTermTaxonomies()).orElse(emptyList()).stream()
+                .filter(t -> "category".equals(t.getTaxonomy()))
+                .map(c -> c.getTerm().getName())
+                .collect(toSet()),
             retrieved.getCategories().stream().map(TermModel::getName).collect(toSet()));
         assertEquals(
-            reference.getTags().stream().map(c -> c.getTerm().getName()).collect(toSet()),
+            ofNullable(reference.getTermTaxonomies()).orElse(emptyList()).stream()
+                .filter(t -> "post_tag".equals(t.getTaxonomy()))
+                .map(c -> c.getTerm().getName())
+                .collect(toSet()),
             retrieved.getTags().stream().map(TermModel::getName).collect(toSet()));
     }
 }

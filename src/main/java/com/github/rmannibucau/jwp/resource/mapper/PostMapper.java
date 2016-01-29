@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 
@@ -34,9 +35,15 @@ public class PostMapper {
         ofNullable(post.getPostDate()).ifPresent(d -> postModel.setDate(new Date(d.getTime())));
         ofNullable(post.getPostModified()).ifPresent(d -> postModel.setModified(new Date(d.getTime())));
         postModel.setAuthor(ofNullable(post.getPostAuthor()).map(a -> userMapper.toModel(a)).orElse(null));
-        postModel.setCategories(mapTerms(post.getCategories()));
-        postModel.setTags(mapTerms(post.getTags()));
+        postModel.setCategories(mapTerms(findTerms("category", post)));
+        postModel.setTags(mapTerms(findTerms("post_tag", post)));
         return postModel;
+    }
+
+    private static Collection<TermTaxonomy> findTerms(final String taxonomy, final Post post) {
+        return ofNullable(post.getTermTaxonomies()).orElse(emptyList()).stream()
+            .filter(t -> taxonomy.equals(t.getTaxonomy()))
+            .collect(toList());
     }
 
     private List<TermModel> mapTerms(final Collection<TermTaxonomy> terms) {

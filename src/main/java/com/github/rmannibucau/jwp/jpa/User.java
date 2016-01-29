@@ -11,11 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
-import static java.util.Optional.ofNullable;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.TemporalType.TIMESTAMP;
@@ -58,9 +54,4 @@ public class User {
 
     @OneToMany(fetch = EAGER, mappedBy = "user")
     private Collection<UserMeta> metas;
-
-    public Map<String, String> mapMetas() {
-        return ofNullable(getMetas()).orElse(emptyList()).stream()
-                .collect(Collectors.toMap(UserMeta::getMetaKey, UserMeta::getMetaValue));
-    }
 }

@@ -20,9 +20,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import static com.github.rmannibucau.jwp.time.Zones.GMT;
-import static java.util.Collections.emptyList;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
 import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
@@ -116,25 +113,11 @@ public class Post {
         inverseJoinColumns = @JoinColumn(name = "term_taxonomy_id", referencedColumnName = "term_taxonomy_id"))
     private Collection<TermTaxonomy> termTaxonomies;
 
-    public Collection<TermTaxonomy> getTags() {
-        return findTerms("post_tag");
-    }
-
-    public Collection<TermTaxonomy> getCategories() {
-        return findTerms("category");
-    }
-
-    public Collection<TermTaxonomy> findTerms(final String taxonomy) {
-        return ofNullable(termTaxonomies).orElse(emptyList()).stream()
-            .filter(t -> taxonomy.equals(t.getTaxonomy()))
-            .collect(toList());
-    }
-
     @PrePersist
     private void persist() {
         update();
-        postDate = ofNullable(postDate).orElse(postModified);
-        postDateGmt = ofNullable(postDateGmt).orElse(postModifiedGmt);
+        postDate = postDate == null ? postModified : postDate;
+        postDateGmt = postDateGmt == null ? postModifiedGmt : postDateGmt;
 
         // not null on DB side but empty is valid and used by wp
         if (postContentFiltered == null) {
@@ -159,7 +142,7 @@ public class Post {
 
     @PreUpdate
     private void update() {
-        postModified = ofNullable(postModified).orElse(new Date());
-        postModifiedGmt = ofNullable(postModifiedGmt).orElseGet(() -> Date.from(ZonedDateTime.now(GMT).toInstant()));
+        postModified = postModified == null ? new Date() : postModified;
+        postModifiedGmt = postModifiedGmt == null ? Date.from(ZonedDateTime.now(GMT).toInstant()) : postModifiedGmt;
     }
 }
