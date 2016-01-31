@@ -8,7 +8,6 @@ import org.apache.openejb.testing.EnableServices;
 import org.apache.openejb.testing.Jars;
 import org.apache.openejb.testing.RandomPort;
 import org.apache.openejb.testing.SimpleLog;
-import org.junit.runner.RunWith;
 
 import java.net.URL;
 
@@ -17,7 +16,6 @@ import java.net.URL;
 @Jars("deltaspike-")
 @PersistenceUnitDefinition
 @EnableServices(jaxrs = true)
-@RunWith(SingleContainerRunner.class)
 @Classes(cdi = true, context = "jwp")
 @ContainerProperties({
     @ContainerProperties.Property(name = "jwp", value = "new://Resource?type=DataSource"),
