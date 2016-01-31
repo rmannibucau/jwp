@@ -1,0 +1,6 @@
+jwp:
+  date:
+    parser: 'default'
+  gravatar:
+    image:
+      pattern: 'http://www.gravatar.com/avatar/{hash}?size=200'
