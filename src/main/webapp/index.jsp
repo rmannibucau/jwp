@@ -29,8 +29,9 @@
 <script type="text/javascript">
     $(function () {
         new SwaggerUi({
-            url: '<%= application.getContextPath() %>/api/swagger.json',
-            dom_id: "swagger-ui-container",
+            url: '<%= application.getContextPath() %>/api/swagger',
+            swaggerRequstHeaders: 'application/json',
+            dom_id: 'swagger-ui-container',
             sorter: 'alpha'
         }).load();
     });

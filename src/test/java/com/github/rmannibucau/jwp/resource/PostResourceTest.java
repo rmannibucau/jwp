@@ -330,7 +330,9 @@ public class PostResourceTest {
         assertEquals(reference.getPostStatus(), retrieved.getStatus());
         assertEquals(reference.getPostTitle(), retrieved.getTitle());
         assertEquals(reference.getPostAuthor().getId(), retrieved.getAuthor().getId());
-        assertEquals(reference.getPostDate().getTime(), retrieved.getDate().getTime(), TimeUnit.SECONDS.toMillis(2));
+        assertEquals(
+            reference.getPostDate() + " != " + retrieved.getDate(), reference.getPostDate().getTime(),
+            retrieved.getDate().getTime(), TimeUnit.SECONDS.toMillis(2));
         assertEquals(0, retrieved.getParentId());
         assertEquals(reference.getPostExcerpt(), retrieved.getExcerpt());
         assertEquals(reference.getPostModified().getTime(), retrieved.getModified().getTime(), TimeUnit.SECONDS.toMillis(2));
